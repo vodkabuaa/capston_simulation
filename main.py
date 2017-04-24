@@ -44,9 +44,9 @@ if __name__ == "__main__":
 							  iterations=200, print_progress=True)
 			final_pop, fitness = ga_model.run()
 			sort_pop = final_pop[np.argsort(fitness)][::-1]
-			m_opt, u_opt = gs_model.run(initial_point_list=sort_pop, topk=3)
-			numpy.savetxt("fitness.csv", fitness, delimiter=",")
-			numpy.savetxt("u_opt.csv", u_opt, delimiter=",")
+			m_opt, u_opt = gs_model.run(initial_point_list=sort_pop, topk=1)
+			np.savetxt("fitness.csv", fitness, delimiter=",")
+			#np.savetxt("u_opt.csv", u_opt, delimiter=",")
 			#m_opt, u_opt = gs_model.run(initial_point_list=[m_opt], topk=1)
 			utility_t, cons_t, cost_t, ce_t = u.utility(m_opt, return_trees=True)
 			save_output(m_opt, u, utility_t, cons_t, cost_t, ce_t, prefix="gs3_"+name)

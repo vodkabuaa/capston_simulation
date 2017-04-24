@@ -506,8 +506,9 @@ class GradientSearch(object) :
 				adam_rate = self._adam(i+1, history_grad, grad, window=window)
 				accelerator = self._accelerate_scale(accelerator, history_grad, grad)
 
-			new_x = x_hist[i] + adam_rate * accelerator
-			new_x[new_x < 0] = 1e-9
+			#new_x = x_hist[i] + adam_rate * accelerator
+			new_x = x_hist[i] + 0.01 * grad
+                        new_x[new_x < 0] = 1e-9
 			history_grad = np.vstack([history_grad, grad])
 			if self.fixed_values is not None:
 				new_x[self.fixed_indicies] = self.fixed_values
@@ -520,7 +521,7 @@ class GradientSearch(object) :
 			if self.print_progress:
 				print("-- Iteration {} -- \n Current Utility: {}".format(i+1, current))
 				print(new_x)
-
+                np.savetxt("u_out_compare.csv", u_hist, delimiter=",")
 		if return_last:
 			return x_hist[i+1], u_hist[i+1]
 		best_index = np.argmax(u_hist[-10:])
@@ -568,7 +569,8 @@ class GradientSearch(object) :
 			mitigations.append(m)
 			utilities[count] = u
 		best_index = np.argmax(utilities)
-	
+                #np.savetxt("gradient_untility.csv", utilities, delimiter=',')
+	        
 		return mitigations[best_index], utilities[best_index]
 
 
